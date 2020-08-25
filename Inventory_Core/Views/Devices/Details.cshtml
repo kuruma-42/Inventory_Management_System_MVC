@@ -1,0 +1,102 @@
+﻿@model Inventory_Core.Models.Devices
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Devices</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Serial_id)
+        </dd>
+        <dt class="col-sm-2">
+            자재구분
+        </dt>
+        <dd class="col-sm-10">
+            <select asp-for="Code2" asp-items="@((List<SelectListItem>)ViewData["CodeList"])" class="form-control">
+                <option value="0">-- 미선택 --</option>
+            </select>
+        </dd>
+        <dt class="col-sm-2">
+            Sub ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sub_id)
+        </dd>
+        <dt class="col-sm-2">
+            사용여부
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Use_yn)
+        </dd>
+        <dt class="col-sm-2">
+            메모1
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Memo1)
+        </dd>
+        <dt class="col-sm-2">
+            메모2
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Memo2)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Input_dt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Input_dt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Update_dt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Update_dt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Input_id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Input_id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Update_id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Update_id)
+        </dd>
+        <dt class="col-sm-2">
+            QR Code
+        </dt>
+        <dd class="col-sm-10">
+            @if (@Model.Serial_id != null)
+            {
+                <qrcode content="http://192.168.0.77:8077/Devices/ScanView?id=@Model.Serial_id" width="90" height="90" />
+
+
+                <!--< qrcode content="http://inventory.eldigm.com/Devices/ScanView?id=@Model.Serial_id" width="90" height="90" />    -->
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Serial_id">Edit</a> |
+    <a asp-action="Index">Back to List</a> |
+    <a asp-action="History" asp-route-id="@Model.Serial_id">History</a>
+</div>
+
+<script>
+    function qrImgPopup(image) {
+        {
+            var wnd = window.open("about:blank", "wnd");
+            wnd.document.body.innerHTML = `<img src="${image}"; width="90"; height="90";  vertical-align:middle; /><div style="font-size:10px; text-align:center; width:90"> @Model.Serial_id</div>`;
+        }
+    }
+</script>

@@ -1,0 +1,66 @@
+﻿
+@model IEnumerable<Inventory_Core.ViewModels.HistoryViewModel>
+
+@{
+    ViewData["Title"] = "History";
+}
+
+<h1>History</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                SERIAL ID
+            </th>
+            <th>
+                SUB ID
+            </th>
+            <th>
+                자재 구분
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in ViewBag.devicedata)
+            {
+                <td> @item.Serial_id</td>
+                <td> @item.Sub_id</td>
+                <td>@item.Code_nm</td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                기준일시
+            </th>
+            <th>
+                현장명
+            </th>
+            <th>
+                입력자
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reg_dt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Site_nm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Input_id)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

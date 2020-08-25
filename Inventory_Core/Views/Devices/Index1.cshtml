@@ -1,0 +1,101 @@
+﻿@model List<Inventory_Core.ViewModels.DeviceViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Inventory</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-controller="Devices" asp-action="GoAddSite" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    ID
+                </th>
+                <th>
+                    자재구분
+                </th>
+                <th>
+                    Sub ID
+                </th>
+                <th>
+                    사용여부
+                </th>
+                <th>
+                    메모1
+                </th>
+                <th>
+                    메모2
+                </th>
+                <th>
+                    등록일시
+                </th>
+                <th>
+                    등록자
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i=0; i<Model.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" asp-for="@Model[i].Chk_val" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Serial_id)
+                        <input asp-for="@Model[i].Serial_id" class="form-control" readonly />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Code2_nm)
+                        <input asp-for="@Model[i].Code2_nm" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Sub_id)
+                        <input asp-for="@Model[i].Sub_id" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Use_yn)
+                        <input asp-for="@Model[i].Use_yn" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Memo1)
+                        <input asp-for="@Model[i].Memo1" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Memo2)
+                        <input asp-for="@Model[i].Memo2" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Input_dt)
+                        <input asp-for="@Model[i].Input_dt" class="form-control" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Input_id)
+                        <input asp-for="@Model[i].Input_id" class="form-control" />
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@Model[i].Serial_id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@Model[i].Serial_id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@Model[i].Serial_id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <input type="submit" value="선택추가" class="btn btn-primary" />
+    </div>
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

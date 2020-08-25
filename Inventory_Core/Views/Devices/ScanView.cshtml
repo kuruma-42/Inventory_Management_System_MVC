@@ -1,0 +1,204 @@
+﻿@model Inventory_Core.Models.Devices
+
+@{
+    ViewData["Title"] = "ScanView";
+}
+
+<h1>ScanView</h1>
+<div>
+    <h4>Devices</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Serial_id)
+        </dd>
+        <dt class="col-sm-2">
+            자재구분
+        </dt>
+        <dd class="col-sm-10">
+            <select asp-for="Code2" asp-items="@((List<SelectListItem>)ViewData["CodeList"])" class="form-control">
+                <option value="0">-- 미선택 --</option>
+            </select>
+        </dd>
+        <dt class="col-sm-2">
+            Sub ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sub_id)
+        </dd>
+        <dt class="col-sm-2">
+            사용여부
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Use_yn)
+        </dd>
+        <dt class="col-sm-2">
+            메모1
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Memo1)
+        </dd>
+        <dt class="col-sm-2">
+            메모2
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Memo2)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Input_dt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Input_dt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Update_dt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Update_dt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Input_id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Input_id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Update_id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Update_id)
+        </dd>
+    </dl>
+</div>
+
+
+
+<form asp-controller="Devices" asp-action="GoAddSite_ScanView" method="post">
+
+    <input type="hidden" id="Serial_id" name="Serial_id" value="@Model.Serial_id" />
+    <div class="form-group">
+        <input type="button" id="btnAddClick2" value="위치등록" class="btn btn-primary" />|
+        <a asp-action="History" asp-route-id="@Model.Serial_id">History</a>|
+        <a asp-action="Edit" asp-route-id="@Model.Serial_id"><input type="button" value="Edit" class="btn btn-primary" /></a>|
+    </div>
+
+    <div class="container">
+        <div class="modal fade" tabindex="-1" id="siteModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Site</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label">SiteGroup & Site</label>
+                            <select id="Memco_cd" name="Memco_cd" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfSiteGroup, "Memco_cd", "Memco_nm"))"></select>
+                            <!--div class="form-group">
+                                <input class="form-control" type="text"
+                                       placeholder="Login Username" id="inputUserName" />
+                            <div-->
+                        </div>
+                        <div class="form-group">
+                            <select id="Site_cd" name="Site_cd" class="form-control"
+                                    asp-items="@(new SelectList(string.Empty, "Site_cd", "Site_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">기준일자</label>
+                            <input type="datetime-local" id="Reg_dt" name="Reg_dt" value="@ViewBag.DataOfReg_dt" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">구분</label>
+                            <select id="Code3" name="Code3" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode3, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Code3" name="Code4" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode4, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Code3" name="Code5" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode5, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">메모</label>
+                            <input type="text" id="Memo1" name="Memo1" value="" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="Memo2" name="Memo2" value="" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button button4">저장</button>
+                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                            취소
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#siteModal").modal('hide');
+    });
+
+    $("#btnAddClick1").click(function () {
+        $("#siteModal").modal('show');
+    });
+
+    $("#btnAddClick2").click(function () {
+        $("#siteModal").modal('show');
+    });
+
+    $("#btnHideModal").click(function () {
+        $("#siteModal").modal('hide');
+    });
+
+
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $('#Site_cd').html(items);
+    });
+
+    $(document).ready(function () {
+        $('#Memco_cd').change(function () {
+            var url = '@Url.Content("~/")' + "Devices/GetSite";
+            var ddlsource = "#Memco_cd";
+            $.getJSON(url, { Memco_cd: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#Site_cd").empty();
+                $.each(data, function (i, site_cd) {
+                    items += "<option value='" + site_cd.value + "'>" + site_cd.text + "</option>";
+                });
+                $('#Site_cd').html(items);
+            });
+        });
+    });
+
+</script>﻿

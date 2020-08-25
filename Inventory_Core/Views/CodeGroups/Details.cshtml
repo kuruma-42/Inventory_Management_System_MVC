@@ -1,0 +1,72 @@
+﻿@model Inventory_Core.Models.CodeGroup
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>CodeGroup</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            코드그룹명
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Code_nm)
+        </dd>
+        <dt class="col-sm-2">
+            정렬번호
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sort_no)
+        </dd>
+        <dt class="col-sm-2">
+            사용여부
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Use_yn)
+        </dd>
+        <dt class="col-sm-2">
+            메모1
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Memo1)
+        </dd>
+        <dt class="col-sm-2">
+            메모2
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Memo2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Input_dt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Input_dt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Update_dt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Update_dt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Input_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Input_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Update_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Update_id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Code_grp">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,194 @@
+﻿@model List<Inventory_Core.ViewModels.DeviceViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Inventory</h1>
+
+<form asp-controller="Devices" asp-action="GoAddSite" method="post">
+    <p>
+        <a asp-action="Index"><input type="button" value="리스트검색" class="btn btn-secondary" /></a>&nbsp;&nbsp;
+        <a asp-action="Create">Create New</a>&nbsp;&nbsp;
+        <input type="button" id="btnAddClick1" value="선택 위치등록" class="btn btn-primary" />
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    ID
+                </th>
+                <th>
+                    자재구분
+                </th>
+                <th>
+                    Sub ID
+                </th>
+                <th>
+                    사용여부
+                </th>
+                <th>
+                    Site
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" asp-for="@Model[i].Chk_val" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Serial_id)
+                        <input type="hidden" asp-for="@Model[i].Serial_id" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Code2_nm)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Sub_id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Use_yn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Site_nm)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@Model[i].Serial_id">Edit</a>
+                        <a asp-action="Details" asp-route-id="@Model[i].Serial_id">Details</a>
+                        <a asp-action="Delete" asp-route-id="@Model[i].Serial_id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <a asp-action="Index"><input type="button" value="리스트검색" class="btn btn-secondary" /></a>&nbsp;&nbsp;
+        <a asp-action="Create">Create New</a>&nbsp;&nbsp;
+        <input type="button" id="btnAddClick2" value="선택 위치등록" class="btn btn-primary" />
+    </div>
+
+
+    <div class="container">
+        <div class="modal fade" tabindex="-1" id="siteModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Site</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label">SiteGroup & Site</label>
+                            <select id="Memco_cd" name="Memco_cd" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfSiteGroup, "Memco_cd", "Memco_nm"))"></select>
+                            <!--div class="form-group">
+                                <input class="form-control" type="text"
+                                       placeholder="Login Username" id="inputUserName" />
+                            <div-->
+                        </div>
+                        <div class="form-group">
+                            <select id="Site_cd" name="Site_cd" class="form-control"
+                                    asp-items="@(new SelectList(string.Empty, "Site_cd", "Site_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">기준일자</label>
+                            <input type="datetime-local" id="Reg_dt" name="Reg_dt" value="@ViewBag.DataOfReg_dt" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">구분</label>
+                            <select id="Code3" name="Code3" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode3, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Code3" name="Code4" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode4, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Code3" name="Code5" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode5, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">메모</label>
+                            <input type="text" id="Memo1" name="Memo1" value="" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="Memo2" name="Memo2" value="" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button button4">저장</button>
+                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                            취소
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#siteModal").modal('hide');
+    });
+
+    $("#btnAddClick1").click(function () {
+        $("#siteModal").modal('show');
+    });
+
+    $("#btnAddClick2").click(function () {
+        $("#siteModal").modal('show');
+    });
+
+    $("#btnHideModal").click(function () {
+        $("#siteModal").modal('hide');
+    });
+
+
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $('#Site_cd').html(items);
+    });
+
+    $(document).ready(function () {
+        $('#Memco_cd').change(function () {
+            var url = '@Url.Content("~/")' + "Devices/GetSite";
+            var ddlsource = "#Memco_cd";
+            $.getJSON(url, { Memco_cd: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#Site_cd").empty();
+                $.each(data, function (i, site_cd) {
+                    items += "<option value='" + site_cd.value + "'>" + site_cd.text + "</option>";
+                });
+                $('#Site_cd').html(items);
+            });
+        });
+    });
+
+</script>﻿

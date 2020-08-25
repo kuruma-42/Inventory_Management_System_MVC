@@ -1,0 +1,106 @@
+﻿@model Inventory_Core.Models.Site
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Site</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Memco_cd" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Site_nm" class="control-label">현장명</label>
+                <input asp-for="Site_nm" class="form-control" />
+                <span asp-validation-for="Site_nm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Res_nm1" class="control-label">담당자1</label>
+                <input asp-for="Res_nm1" class="form-control" />
+                <span asp-validation-for="Res_nm1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tel_no1" class="control-label">연락처1</label>
+                <input asp-for="Tel_no1" class="form-control" />
+                <span asp-validation-for="Tel_no1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Res_nm2" class="control-label">담당자2</label>
+                <input asp-for="Res_nm2" class="form-control" />
+                <span asp-validation-for="Res_nm2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tel_no2" class="control-label">연락처2</label>
+                <input asp-for="Tel_no2" class="form-control" />
+                <span asp-validation-for="Tel_no2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Eldigm_res_nm" class="control-label">엘다임담당자</label>
+                <input asp-for="Eldigm_res_nm" class="form-control" />
+                <span asp-validation-for="Eldigm_res_nm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">주소</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sort_no" class="control-label">정렬번호</label>
+                <input asp-for="Sort_no" class="form-control" />
+                <span asp-validation-for="Sort_no" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Use_yn" class="control-label">사용여부</label>
+                <select asp-for="Use_yn" class="form-control">
+                    <option value="Y">Y</option>
+                    <option value="N">N</option>
+                </select>
+                <span asp-validation-for="Use_yn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Start_dt" class="control-label">시작일시</label>
+                <input type="date" asp-for="Start_dt" class="form-control" />
+                <span asp-validation-for="Start_dt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="End_dt" class="control-label">종료일시</label>
+                <input type="date" asp-for="End_dt" class="form-control" />
+                <span asp-validation-for="End_dt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Code1" class="control-label">구분</label>
+                <select asp-for="Code1" asp-items="@((List<SelectListItem>)ViewData["CodeList"])" class="form-control">
+                    <option value="0">-- 미선택 --</option>
+                </select>
+                <span asp-validation-for="Code1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Memo1" class="control-label">메모1</label>
+                <input asp-for="Memo1" class="form-control" />
+                <span asp-validation-for="Memo1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Memo2" class="control-label">메모2</label>
+                <input asp-for="Memo2" class="form-control" />
+                <span asp-validation-for="Memo2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-memco_cd="@ViewData["Memco_cd"]">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
