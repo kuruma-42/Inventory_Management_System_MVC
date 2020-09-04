@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Inventory_Core.ViewModels.HistoryViewModel>
+@model List<Inventory_Core.ViewModels.HistoryViewModel>
 
 @{
     ViewData["Title"] = "History";
@@ -36,31 +36,328 @@
     <thead>
         <tr>
             <th>
+
+            </th>
+            <th>
+                LOG ID
+            </th>
+            <th>
+                판매상태
+            </th>
+            <th>
+                자재구분
+            </th>
+            <th>
+
+            </th>
+            <th>
                 기준일시
+            </th>
+            <th>
+                회원사
             </th>
             <th>
                 현장명
             </th>
             <th>
-                입력자
+                메모1
+            </th>
+            <th>
+                메모2
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @for (int i = 0; i < Model.Count(); i++)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Reg_dt)
+                    <input type="hidden" id="Code3_@i" value="@Model[i].Code3" />
+                    <input type="hidden" id="Memco_cd_@i" value="@Model[i].Memco_cd" />
+                    <input type="hidden" id="Site_cd_@i" value="@Model[i].Site_cd" />
+                    <input type="hidden" id="Code4_@i" value="@Model[i].Code4" />
+                    <input type="hidden" id="Code5_@i" value="@Model[i].Code5" />
+
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Site_nm)
+                    <input type="hidden" id="log_id_@i" value="@Model[i].Log_id" />
+                    @Html.DisplayFor(modelItem => Model[i].Log_id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Input_id)
+                    <input type="hidden" id="Code_nm3_@i" value="@Model[i].Code_nm3" />
+                    @Html.DisplayFor(modelItem => Model[i].Code_nm3)
+                </td>
+                <td>
+                    <input type="hidden" id="Code_nm4_@i" value="@Model[i].Code_nm4" />
+                    @Html.DisplayFor(modelItem => Model[i].Code_nm4)
+                </td>
+                <td>
+                    <input type="hidden" id="Code_nm5_@i" value="@Model[i].Code_nm5" />
+                    @Html.DisplayFor(modelItem => Model[i].Code_nm5)
+                </td>
+                <td>
+                    <input type="hidden" id="Reg_dt_@i" value="@Model[i].Reg_dt.ToString("yyyy-MM-ddThh:mm:ss")" />
+                    @Html.DisplayFor(modelItem => Model[i].Reg_dt)
+                </td>
+                <td>
+                    <input type="hidden" id="Memco_nm_@i" value="@Model[i].Memco_nm" />
+                    @Html.DisplayFor(modelItem => Model[i].Memco_nm)
+                </td>
+                <td>
+                    <input type="hidden" id="Code_@i" value="@Model[i].Site_nm" />
+                    @Html.DisplayFor(modelItem => Model[i].Site_nm)
+                </td>
+                <td>
+                    <input type="hidden" id="Memo1_@i" value="@Model[i].Memo1" />
+                    @Html.DisplayFor(modelItem => Model[i].Memo1)
+                </td>
+                <td>
+                    <input type="hidden" id="Memo2_@i" value="@Model[i].Memo2" />
+                    @Html.DisplayFor(modelItem => Model[i].Memo2)
+                </td>
+                <td>
+                    <input type="hidden" id="input_id_@i" value="@Model[i].Input_id" />
+                    @Html.DisplayFor(modelItem => Model[i].Input_id)
+                </td>
+                <td>
+                    <input type="button" id="@Model[i].Log_id" onclick=" button1_click(this.id);go_check(@i);" value="수정" class="btn btn-primary" />
+                    <!-- input type="button" onclick="go_check()" value="수정" class="btn btn-primary" /-->
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+
+<form asp-controller="Devices" asp-action="History_Edit" id="DevicesForm" method="post">
+    <div class="container">
+        <div class="modal fade" tabindex="-1" id="siteModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Site</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <input type="hidden" id="Log_id" name="Log_id" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Serial_id</label>
+
+                            @foreach (var item in ViewBag.devicedata)
+                            {
+                                <input type="text" id="Serial_id" name="Serial_id" value="@item.Serial_id" class="form-control" />
+                            }
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">SiteGroup & Site</label>
+                            <select id="Memco_cd" name="Memco_cd" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfSiteGroup, "Memco_cd", "Memco_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Site_cd" name="Site_cd" class="form-control"
+                                    asp-items="@(new SelectList(string.Empty, "Site_cd", "Site_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">기준일자</label>
+                            <input type="datetime-local" id="Reg_dt" name="Reg_dt" value="@ViewBag.DataOfReg_dt" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">구분</label>
+                            <select id="Code3" name="Code3" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode3, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Code4" name="Code4" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode4, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="Code5" name="Code5" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfCode5, "Code", "Code_nm"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">메모</label>
+                            <input type="text" id="Memo1" name="Memo1" value="" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="Memo2" name="Memo2" value="" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button button4">저장</button>
+                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                            취소
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var item in ViewBag.devicedata)
+    {
+        <a asp-action="Details" asp-route-id="@item.Serial_id">Back to Details</a>
+    }
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#siteModal").modal('hide');
+    });
+
+    //$("#btnAddClick1").click(function () {
+    //    $("#siteModal").modal('show');
+    //});
+
+    function button1_click(clicked_id) {
+    $("#siteModal").modal('show');
+    //alert(clicked_id);
+    }
+
+    $("#btnHideModal").click(function () {
+        $("#siteModal").modal('hide');
+    });
+
+
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $('#Site_cd').html(items);
+    });
+
+    $(document).ready(function () {
+        $('#Memco_cd').change(function () {
+            var url = '@Url.Content("~/")' + "Devices/GetSite";
+            var ddlsource = "#Memco_cd";
+            $.getJSON(url, { Memco_cd: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#Site_cd").empty();
+                $.each(data, function (i, site_cd) {
+                    items += "<option value='" + site_cd.value + "'>" + site_cd.text + "</option>";
+                });
+                $('#Site_cd').html(items);
+            });
+        });
+    });
+
+    //ajax 현장명
+    function go_siteBind(siteVal) {
+            var url = '@Url.Content("~/")' + "Devices/GetSite";
+            var ddlsource = "#Memco_cd";
+            $.getJSON(url, { Memco_cd: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#Site_cd").empty();
+                $.each(data, function (i, site_cd) {
+                    if (site_cd.value == siteVal) {
+                        items += "<option value='" + site_cd.value + "' selected>" + site_cd.text + "</option>";
+                    } else {
+                        items += "<option value='" + site_cd.value + "'>" + site_cd.text + "</option>";
+                    }
+                });
+                $('#Site_cd').html(items);
+            });
+    }
+
+
+    //Edit Mapping
+    function go_check(rowNum) {
+        //로그 아이디 매핑
+        var logid = document.getElementById("log_id_" + rowNum).value;
+        document.getElementById("Log_id").value = logid;
+
+        //회원사코드 매핑
+        var memcomapping = document.getElementById("Memco_cd_" + rowNum).value;
+        var memco_cd = document.getElementById("Memco_cd");
+
+
+        for (var i = 0; i < memco_cd.length; i++) {
+            if (memco_cd[i].value == memcomapping) {
+                memco_cd[i].selected = true
+            }
+        }
+        //사이트코드 매핑
+        var sitecdmapping = document.getElementById("Site_cd_" + rowNum).value;
+        go_siteBind(sitecdmapping);
+
+        //코드3매핑
+        var code3mapping = document.getElementById("Code3_" + rowNum).value;
+        var scode3 = document.getElementById("Code3");
+
+        for (var i = 0; i < scode3.length; i++) {
+            if (scode3[i].value == code3mapping) {
+                scode3[i].selected = true;
+            }
+        }
+        //코드4매핑
+        var code4mapping = document.getElementById("Code4_" + rowNum).value;
+        var scode4 = document.getElementById("Code4");
+
+        for (var i = 0; i < scode4.length; i++) {
+            if (scode4[i].value == code4mapping) {
+                scode4[i].selected = true;
+            }
+        }
+
+        //코드5매핑
+        var code5mapping = document.getElementById("Code5_" + rowNum).value;
+        var scode5 = document.getElementById("Code5");
+
+        for (var i = 0; i < scode5.length; i++) {
+            if (scode5[i].value == code5mapping) {
+                scode5[i].selected = true;
+            }
+        }
+        //메모1
+        var memo1 = document.getElementById("Memo1_" + rowNum).value;
+        document.getElementById("Memo1").value = memo1;
+
+        //메모2
+        var memo2 = document.getElementById("Memo2_" + rowNum).value;
+        document.getElementById("Memo2").value = memo2;
+
+        //var regdtmapping = document.getElementById("Reg_dt_" + rowNum).value;
+        //var regdt = document.getElementById("Reg_dt").value = regdtmapping;
+
+
+
+        var regdtmapping = document.getElementById("Reg_dt_" + rowNum).value;
+        
+
+        document.getElementById("Reg_dt").value = regdtmapping;
+
+        ////기준일자 매핑
+        //var regdtmapping = document.getElementById("Reg_dt_" + rowNum).value;
+        ////var regdt = document.getElementById("Reg_dt").value = regdtmapping;
+        //var regdt = doucument.regdt = document.getElementById("Reg_dt").value= regdtamapping;
+        //for (var i = 0; i < regdt.length; i++) {
+        //    if (regdt[i].value == regdtmapping) {
+        //        regdt[i].selected = true;
+        //    }
+        //}
+    }
+</script>﻿

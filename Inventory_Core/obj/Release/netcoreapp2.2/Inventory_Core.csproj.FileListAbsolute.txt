@@ -49,6 +49,7 @@ D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Areas\Ident
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Areas\Identity\Pages\_ViewImports.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Areas\Identity\Pages\_ViewStart.g.cshtml.cs
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\Auth\Index.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\CodeGroups\Create.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\CodeGroups\Delete.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\CodeGroups\Details.g.cshtml.cs
@@ -87,6 +88,11 @@ D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\Sites
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\Sites\Edit.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\Sites\Index.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\Sites\Index1.g.cshtml.cs
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\WorkDiary\WorkDiary.g.cshtml.cs
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\WorkDiary\WorkDiary_Content.g.cshtml.cs
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\WorkDiary\WorkDiary_Write.g.cshtml.cs
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\WorkStatus\Index.g.cshtml.cs
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\WorkStatus\Ws_search.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\_ViewImports.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\_ViewStart.g.cshtml.cs
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Inventory_Core.RazorTargetAssemblyInfo.cache
@@ -95,3 +101,4 @@ D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Inventory_Core.Vi
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Inventory_Core.dll
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Inventory_Core.pdb
 D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Inventory_Core.csproj.CopyComplete
+D:\3.DevOps\Inventory\Inventory_Core\obj\Release\netcoreapp2.2\Razor\Views\WorkStatus\Error.g.cshtml.cs

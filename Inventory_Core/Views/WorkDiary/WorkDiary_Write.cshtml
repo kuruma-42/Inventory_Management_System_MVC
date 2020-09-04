@@ -1,0 +1,87 @@
+﻿@model Inventory_Core.Models.WorkDiary
+
+@{
+    ViewData["Title"] = "WorkDiary_Write";
+}
+
+<h1>WorkDiary_Write</h1>
+
+<div class="row">
+<div class="col-md-4">
+    <form asp-action="WorkDiary_Write" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Reg_date" class="control-label">기준일자</label>
+            <input type="date" id="reg_date" asp-for="Reg_date" class="form-control" />
+            @*<input asp-for="Reg_date" name="reg_date" class="form-control" />*@
+            @*<span asp-validation-for="Reg_date" class="text-danger"></span>*@
+        </div>
+        @*<div class="form-group">
+            <label asp-for="User_id" class="control-label">사용자ID</label>
+            <input asp-for="User_id" class="form-control"  />
+            <span asp-validation-for="User_id" class="text-danger"></span>
+        </div>*@
+        <div class="form-group">
+            <label asp-for="Title" class="control-label">제목</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Contents" class="control-label">내용</label>
+            <textarea rows="10" asp-for="Contents" class="form-control"></textarea>
+            <span asp-validation-for="Contents" class="text-danger"></span>
+        </div>
+        @*<div class="form-group">
+            <label asp-for="Input_dt" class="control-label">입력일시</label>
+            <input asp-for="Input_dt" class="form-control" />
+            <span asp-validation-for="Input_dt" class="text-danger"></span>
+        </div>*@
+        @*<div class="form-group">
+            <label asp-for="Update_dt" class="control-label">수정일시</label>
+            <input asp-for="Update_dt" class="form-control" />
+            <span asp-validation-for="Update_dt" class="text-danger"></span>
+        </div>*@
+        @*<div class="form-group">
+            <label asp-for="Del_flag" class="control-label">삭제여부</label>
+            <select asp-for="Del_flag" class="form-control">
+                <option value="0">0</option>
+                <option value="1">1</option>
+            </select>
+            <span asp-validation-for="Del_flag" class="text-danger"></span>
+        </div>*@
+        <div class="form-group">
+            <input type="submit" value="작성" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+</div>
+
+<div>
+    <a asp-action="WorkDiary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    window.onload = function setMonth() {
+        var today = new Date();
+
+        var val_year = today.getFullYear(); // 년도
+        var val_month = today.getMonth() + 1;  // 월
+        var val_date = today.getDate(); // 날짜
+
+        if (val_month.toString().length == 1) {
+            val_month = "0" + val_month;
+        }
+
+        if (val_date.toString().length == 1) {
+            val_date = "0" + val_date;
+        }
+
+        document.getElementsByName("reg_date").values = today;
+        document.getElementById("reg_date").value = val_year +"-" + val_month + "-" + val_date;
+       
+    }
+</script>

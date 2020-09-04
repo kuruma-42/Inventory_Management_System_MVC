@@ -7,15 +7,21 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using ZXing.QrCode;
 using System.Drawing;
 using System.IO;
+using Microsoft.AspNetCore.Http;
+using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Inventory_Core.Tags
 {
+    [HtmlTargetElement("pager", Attributes = "total-pages, current-page, link-url")]
     // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
     [HtmlTargetElement("qrcode")]
     public class QRCodeTagHelper : TagHelper
     {
+        
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            //var content = context.AllAttributes["content"].Value.ToString();
             var content = context.AllAttributes["content"].Value.ToString();
             var width = int.Parse(context.AllAttributes["width"].Value.ToString());
             var height = int.Parse(context.AllAttributes["height"].Value.ToString());
@@ -29,6 +35,8 @@ namespace Inventory_Core.Tags
                     Margin = 0
                 }
             };
+
+            //Write(content);
             var pixelData = barcodeWriterPixelData.Write(content);
             using (var bitmap = new Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
             {

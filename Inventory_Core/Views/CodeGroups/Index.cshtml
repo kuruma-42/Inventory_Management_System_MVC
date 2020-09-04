@@ -27,33 +27,34 @@
             <th>
                 메모2
             </th>
-            <th></th>
+            <th>
+                코드
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Codes" asp-action="Index" asp-route-code_grp="@item.Code_grp">@Html.DisplayFor(modelItem => item.Code_nm)</a>
-</td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sort_no)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Use_yn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Memo1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Memo2)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Code_grp">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Code_grp">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Code_grp">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details"  asp-route-id="@item.Code_grp">@Html.DisplayFor(modelItem => item.Code_nm)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sort_no)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Use_yn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Memo1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Memo2)
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="Codes" asp-action="Index" asp-route-code_grp="@item.Code_grp">Codes</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

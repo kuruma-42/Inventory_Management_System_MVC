@@ -139,7 +139,7 @@ namespace Inventory_Core.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id });
             }
             return View(siteGroup);
         }

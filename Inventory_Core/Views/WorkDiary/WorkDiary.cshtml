@@ -1,0 +1,131 @@
+﻿@model List<Inventory_Core.Models.WorkDiary>
+
+@{
+    ViewData["Title"] = "WorkDiary";
+}
+
+<h1>WorkDiary</h1>
+
+<h4>작업일지</h4>
+<style>
+    dt {
+        float: left;
+    }
+
+    dd {
+        float: right;
+        margin: 4px;
+    }
+</style>
+<form asp-controller="WorkDiary" asp-action="WorkDiary" method="post">
+    <div>
+        <dt>
+            <select id="year" name="year">
+                @*<option value="">연도 선택</option>*@
+                @for (int i = 2020; i <= 2040; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+            년
+        </dt>
+        <dt>
+            <input type="hidden" id="startMonth" value="8" />
+            <select id="month" name="month">
+                @*<option value="">월 선택</option>*@
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+            월
+        </dt>
+        <dd>
+            <a asp-action="WorkDiary_Write"><input type="button" value="작성" class="btn btn-primary" /></a>
+        </dd>
+        <dd>
+            <button type="submit" class="btn btn-primary">검색</button>
+        </dd>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    기준일자
+                </th>
+                <th>
+                    사용자ID
+                </th>
+                <th>
+                    제목
+                </th>
+                <th>
+                    입력일시
+                </th>
+                <th>
+                    수정일시
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <input type="hidden" name="reg_dt_@i" id="reg_dt_@i" value="@Model[i].Del_flag" />
+                <input type="hidden" id="Reg_date_@i" value="@Model[i].Reg_date" />
+                @*<a class="nav-link text-dark" asp-area="" asp-controller="Sites" asp-action="Index" asp-route-memco_cd="@item.Memco_cd">@Html.DisplayFor(modelItem => item.Memco_nm)</a>*@
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model[i].Reg_date)
+                    </td>
+                    <td>
+                        @*<input type="hidden" id="User_id_@i" value="@Model[i].User_id" />*@
+                        @Html.DisplayFor(modelItem => Model[i].User_id)
+                    </td>
+                    <td>
+                        @*<input type="hidden" id="Title_@i" value="@Model[i].Title" />*@
+                        <a  asp-area="" asp-route-Wd_id="@Model[i].Wd_id"
+                           asp-controller="WorkDiary" asp-action="WorkDiary_Content">
+                            @Html.DisplayFor(modelItem => Model[i].Title)
+                        </a>
+                    </td>
+                    @*<td>
+                            <input type="hidden" id="Code_nm5_@i" value="@Model[i].Contents" />
+                            @Html.DisplayFor(modelItem => Model[i].Contents)
+                        </td>*@
+
+                    <td>
+                        <input type="hidden" id="Input_dt_@i" name="Input_dt_@i" value="@Model[i].Input_dt" />
+                        @Html.DisplayFor(modelItem => Model[i].Input_dt)
+                    </td>
+                    <td>
+                        <input type="hidden" id="Update_dt_@i" value="@Model[i].Update_dt" />
+                        @Html.DisplayFor(modelItem => Model[i].Update_dt)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<script>
+    window.onload = function setMonth() {
+        let today = new Date();
+        let GetMonth = today.getMonth() + 1;
+        var month = document.getElementById("month");
+
+        for (var i = 0; i < month.length; i++) {
+            if (month[i].value == @ViewData["reg_dt"]) {
+                month[i].selected = true;
+            }
+        }
+    }
+</script>

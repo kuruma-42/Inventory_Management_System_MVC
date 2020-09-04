@@ -17,5 +17,12 @@ namespace Inventory_Core.Data
         public DbSet<Inventory_Core.Models.Devices> T00_DEVICE { get; set; }
         public DbSet<Inventory_Core.Models.Device_Logs> T00_DEVICE_LOG { get; set; }
         public DbSet<Inventory_Core.Models.Device_Sts> T00_DEVICE_STS { get; set; }
+        public DbSet<Inventory_Core.Models.WorkDiary> T01_WORKDIARY { get; set; }
+        //public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
+        //public virtual DbSet<Inventory_Core.Models.UserRoles> AspNetUserRoles { get; set; }
+        //public virtual DbSet<Inventory_Core.Models.ApplicationUser> AspNetUsers { get; set; }
+        //public virtual DbSet<Inventory_Core.Models.ApplicationRole> AspNetRoles { get; set; }
+        //public DbSet<Inventory_Core.Models.AuthUserRoles> AspNetUserRoles { get; set; }
+
     }
 }

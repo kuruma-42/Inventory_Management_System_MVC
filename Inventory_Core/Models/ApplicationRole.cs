@@ -4,5 +4,6 @@ namespace Inventory_Core.Models
 {
     public class ApplicationRole : IdentityRole
     {
+        
     }
 }

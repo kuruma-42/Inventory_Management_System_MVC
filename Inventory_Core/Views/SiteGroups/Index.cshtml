@@ -27,7 +27,9 @@
             <th>
                 메모2
             </th>
-            <th></th>
+            <th>
+                현장
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -35,7 +37,7 @@
         {
             <tr>
                 <td>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Sites" asp-action="Index" asp-route-memco_cd="@item.Memco_cd">@Html.DisplayFor(modelItem => item.Memco_nm)</a>
+                    <a asp-action="Details"  asp-route-id="@item.Memco_cd">@Html.DisplayFor(modelItem => item.Memco_nm)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Sort_no)
@@ -50,9 +52,7 @@
                     @Html.DisplayFor(modelItem => item.Memo2)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Memco_cd">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.Memco_cd">Details</a> 
-                    <a asp-action="Delete" asp-route-id="@item.Memco_cd">Delete</a>
+                    <a asp-area="" asp-controller="Sites" asp-action="Index" asp-route-memco_cd="@item.Memco_cd">Site</a>
                 </td>
             </tr>
         }

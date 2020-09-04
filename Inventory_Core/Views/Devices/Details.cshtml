@@ -6,6 +6,7 @@
 
 <h1>Details</h1>
 
+
 <div>
     <h4>Devices</h4>
     <hr />
@@ -78,10 +79,10 @@
         <dd class="col-sm-10">
             @if (@Model.Serial_id != null)
             {
-                <qrcode content="http://192.168.0.77:8077/Devices/ScanView?id=@Model.Serial_id" width="90" height="90" />
+                var Host = $"{Context.Request.Scheme}://{Context.Request.Host}";
+                <qrcode content="@Context.Request.Scheme:/@Context.Request.Host/Devices/ScanView?id=@Model.Serial_id" width="90" height="90" />
 
-
-                <!--< qrcode content="http://inventory.eldigm.com/Devices/ScanView?id=@Model.Serial_id" width="90" height="90" />    -->
+                //qrcode content = "http://inventory.eldigm.com/Devices/ScanView?id=@Model.Serial_id" width = "90" height = "90" />
             }
         </dd>
     </dl>
@@ -89,14 +90,22 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Serial_id">Edit</a> |
     <a asp-action="Index">Back to List</a> |
-    <a asp-action="History" asp-route-id="@Model.Serial_id">History</a>
+    <a asp-action="History" asp-route-id="@Model.Serial_id">History</a> |
+    <a asp-action="Delete" asp-route-id="@Model.Serial_id">Delete</a>
 </div>
 
 <script>
     function qrImgPopup(image) {
         {
             var wnd = window.open("about:blank", "wnd");
-            wnd.document.body.innerHTML = `<img src="${image}"; width="90"; height="90";  vertical-align:middle; /><div style="font-size:10px; text-align:center; width:90"> @Model.Serial_id</div>`;
+            wnd.document.body.innerHTML = `<img src="${image}"; width="90"; height="90";  vertical-align:middle; />
+            <div style="font-size:10px; text-align:center; width:90"> @Model.Serial_id</div>`;
         }
     }
-</script>
+
+    window.onload = function () {
+        var newURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
+        return newURL;
+    };
+
+            </script>

@@ -46,14 +46,12 @@ namespace Inventory_Core.Controllers
             return View();
         }
 
-        // GET: Devices
-        public async Task<IActionResult> Index_search()
-        {
-            //var db_data = from _data in _context.T00_DEVICE
-            //                  //where !_data.Use_yn.Equals("N")
-            //              orderby _data.Input_dt descending
-            //              select _data;
 
+
+
+        // GET: Devices
+        public async Task<IActionResult> Index_search(string s_f_code2, string s_f_memco_cd, string s_f_serial_id, string s_f_site_cd, string s_f_sub_id)
+        {
 
             // 현장 그룹
             List<SiteGroup> siteGroups = new List<SiteGroup>();
@@ -93,15 +91,33 @@ namespace Inventory_Core.Controllers
             codes5.Insert(0, new Codes { Code = 0, Code_nm = "- Select -" });
             ViewBag.ListOfCode5 = codes5;
 
+            var f_code2 = "";
+            var f_serial_id = "";
+            var f_sub_id = "";
+            var f_memco_cd = "";
+            var f_site_cd = "";
+            if (s_f_serial_id is null)
+            {
+                f_code2 = HttpContext.Request.Form["F_Code2"].ToString();
+                f_serial_id = HttpContext.Request.Form["F_Serial_id"].ToString();
+                f_sub_id = HttpContext.Request.Form["F_Sub_id"].ToString();
+                f_memco_cd = HttpContext.Request.Form["F_Memco_cd"].ToString();
+                f_site_cd = HttpContext.Request.Form["F_Site_cd"].ToString();
+            }
+            else
+            {
+                f_code2 = s_f_code2;
+                f_serial_id = s_f_serial_id;
+                f_sub_id = s_f_sub_id;
+                f_memco_cd = s_f_memco_cd;
+                f_site_cd = s_f_site_cd;
+            }
 
-
-            // 검색 조건 넘어온것
-            var f_code2 = HttpContext.Request.Form["F_Code2"].ToString();
-            var f_serial_id = HttpContext.Request.Form["F_Serial_id"].ToString();
-            var f_sub_id = HttpContext.Request.Form["F_Sub_id"].ToString();
-            var f_memco_cd = HttpContext.Request.Form["F_Memco_cd"].ToString();
-            var f_site_cd = HttpContext.Request.Form["F_Site_cd"].ToString();
-
+            ViewBag.s_f_code2 = f_code2;
+            ViewBag.s_f_serial_id = f_serial_id;
+            ViewBag.s_f_sub_id = f_sub_id;
+            ViewBag.s_f_memco_cd = f_memco_cd;
+            ViewBag.s_f_site_cd = f_site_cd;
 
 
             var db_data = from _data in _context.T00_DEVICE
@@ -134,6 +150,8 @@ namespace Inventory_Core.Controllers
                               Memco_nm = _data_Memco.Memco_nm
                           };
             // 검색 조건
+
+
             if (f_code2 != "0")
             {
                 db_data = db_data.Where(e => e.Code2.Equals(Convert.ToInt32(f_code2)));
@@ -142,7 +160,7 @@ namespace Inventory_Core.Controllers
             {
                 db_data = db_data.Where(e => e.Serial_id.IndexOf(f_serial_id) >= 0);
             }
-            if (f_sub_id != "")
+            if (f_sub_id != null)
             {
                 db_data = db_data.Where(e => e.Sub_id.IndexOf(f_sub_id) >= 0);
             }
@@ -155,11 +173,14 @@ namespace Inventory_Core.Controllers
                 db_data = db_data.Where(e => e.Site_cd.Equals(Convert.ToInt32(f_site_cd)));
             }
 
+
+
             return View(await db_data.ToListAsync());
 
-
-            //return View(await _context.T00_DEVICE.ToListAsync());
         }
+
+
+
 
         // GET: Devices
         public async Task<IActionResult> Index1()
@@ -285,6 +306,21 @@ namespace Inventory_Core.Controllers
                 .Where(n => n.Code_grp.Equals(2))
                 .Select(n => new SelectListItem { Value = n.Code.ToString(), Text = n.Code_nm }).ToList();
 
+            //List<Details_logViewModel> device_data = new List<Details_logViewModel>();
+            //device_data = (from _data in _context.T00_DEVICE
+            //               join _data2 in _context.T00_CODE on _data.Code2 equals _data2.Code
+            //               where _data.Serial_id.Equals(id)
+            //               select new Details_logViewModel
+            //               {
+            //                   Serial_id = _data.Serial_id,
+            //                   Sub_id = _data.Sub_id,
+            //                   Code_nm = _data2.Code_nm
+            //               }).ToList();
+
+            //ViewBag.devicedata = device_data;
+
+            ViewData["QRURL"] = ":/Devices/ScanView?id=@Model.Serial_id";
+
             if (id == null)
             {
                 return NotFound();
@@ -384,47 +420,13 @@ namespace Inventory_Core.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Details), new { id });
             }
             return View(devices);
         }
 
-        public async Task<IActionResult> History(string id)
-        {
-            List<Details_logViewModel> device_data = new List<Details_logViewModel>();
-            device_data = (from _data in _context.T00_DEVICE
-                           join _data2 in _context.T00_CODE on _data.Code2 equals _data2.Code
-                           where _data.Serial_id.Equals(id)
-                           select new Details_logViewModel
-                           {
-                               Serial_id = _data.Serial_id,
-                               Sub_id = _data.Sub_id,
-                               Code_nm = _data2.Code_nm
-                           }).ToList();
 
-            ViewBag.devicedata = device_data;
-
-            if (id == null)
-            {
-                NotFound();
-            }
-
-            var db_data = from _data in _context.T00_DEVICE_LOG
-                          join _data2 in _context.T00_SITE on _data.Site_cd equals _data2.Site_cd
-                          where _data.Serial_id.Equals(id)
-                          orderby _data.Reg_dt descending
-                          select new HistoryViewModel
-                          {
-                              Serial_id = _data.Serial_id,
-                              Code2 = _data.Site_cd,
-                              Sub_id = _data.Log_id,
-                              Reg_dt = _data.Reg_dt,
-                              Site_nm = _data2.Site_nm,
-                              Input_id = _data.Input_id
-                          };
-
-            return View(await db_data.ToListAsync());
-        }
 
         // GET: Devices/Delete/5
         public async Task<IActionResult> Delete(string id)
@@ -485,6 +487,14 @@ namespace Inventory_Core.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+                //if(!=)
+                var s_f_code2 = HttpContext.Request.Form["s_f_code2"].ToString();
+                var s_f_serial_id = HttpContext.Request.Form["s_f_serial_id"].ToString();
+                var s_f_sub_id = HttpContext.Request.Form["s_f_sub_id"].ToString();
+                var s_f_memco_cd = HttpContext.Request.Form["s_f_memco_cd"].ToString();
+                var s_f_site_cd = HttpContext.Request.Form["s_f_site_cd"].ToString();
                 var memco_cd = HttpContext.Request.Form["Memco_cd"].ToString();
                 var site_cd = HttpContext.Request.Form["Site_cd"].ToString();
                 var reg_dt = HttpContext.Request.Form["Reg_dt"].ToString();
@@ -550,12 +560,12 @@ namespace Inventory_Core.Controllers
                                     await _context.SaveChangesAsync();
                                 }
                             }
+
+                            return RedirectToAction(nameof(Index_search), new { s_f_code2, s_f_memco_cd, s_f_serial_id, s_f_site_cd, s_f_sub_id });
                         }
-                    }
-                    return RedirectToAction(nameof(Index));
+                    }                    
                 }
             }
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -633,7 +643,9 @@ namespace Inventory_Core.Controllers
                         }
                     }
 
-                    return RedirectToAction(nameof(Index));
+
+
+                    return RedirectToAction(nameof(ScanView), new { id = serial_id });
                 }
             }
 
@@ -698,5 +710,176 @@ namespace Inventory_Core.Controllers
 
             return View(devices);
         }
+
+
+        public async Task<IActionResult> History(string id)
+        {
+            List<Details_logViewModel> device_data = new List<Details_logViewModel>();
+            device_data = (from _data in _context.T00_DEVICE
+                           join _data2 in _context.T00_CODE on _data.Code2 equals _data2.Code
+                           where _data.Serial_id.Equals(id)
+                           select new Details_logViewModel
+                           {
+                               Serial_id = _data.Serial_id,
+                               Sub_id = _data.Sub_id,
+                               Code_nm = _data2.Code_nm
+                           }).ToList();
+            ViewBag.devicedata = device_data;
+
+            if (id == null)
+            {
+                NotFound();
+            }
+            var db_data = from _data0 in _context.T00_DEVICE_LOG
+                          join _data1 in _context.T00_SITE on _data0.Site_cd equals _data1.Site_cd into _joindata0
+                          from _data1 in _joindata0
+                          join _data2 in _context.T00_MEMCO on _data1.Memco_cd equals _data2.Memco_cd into _joindata1
+                          from _data2 in _joindata1
+                          join _data3 in _context.T00_CODE on _data0.Code3 equals _data3.Code into _joindata2
+                          from _data3 in _joindata2.DefaultIfEmpty()
+                          join _data4 in _context.T00_CODE on _data0.Code4 equals _data4.Code into _joindata3
+                          from _data4 in _joindata3.DefaultIfEmpty()
+                          join _data5 in _context.T00_CODE on _data0.Code5 equals _data5.Code into _joindata4
+                          from _data5 in _joindata4.DefaultIfEmpty()
+                          where (_data0.Serial_id.Equals(id))
+                          orderby _data0.Reg_dt descending
+                          select new HistoryViewModel
+                          {
+                              Log_id = _data0.Log_id,
+                              Reg_dt = _data0.Reg_dt,
+                              Memco_cd = _data1.Memco_cd,
+                              Memco_nm = _data2.Memco_nm,
+                              Site_cd = _data1.Site_cd,
+                              Site_nm = _data1.Site_nm,
+                              Code_nm3 = (_data3.Code_nm == null) ? "" : _data3.Code_nm,
+                              Code_nm4 = (_data4.Code_nm == null) ? "" : _data4.Code_nm, //ISNULL
+                              Code_nm5 = (_data5.Code_nm == null) ? "" : _data5.Code_nm, //ISNULL
+                              Memo1 = _data0.Memo1,
+                              Memo2 = _data0.Memo2,                              
+                              Code3 = _data0.Code3,
+                              Code4 = _data0.Code4,
+                              Code5 = _data0.Code5
+                          };
+                                    
+
+            // 현장 그룹
+            List<SiteGroup> siteGroups = new List<SiteGroup>();
+            siteGroups = (from _data1 in _context.T00_MEMCO
+                          select _data1).ToList();
+            siteGroups.Insert(0, new SiteGroup { Memco_cd = 0, Memco_nm = "- Select -" });
+            ViewBag.ListOfSiteGroup = siteGroups;
+
+            // 기준일자
+            string dateTime = DateTime.Now.ToString("yyyy-MM-ddT00:00:00");
+            ViewBag.DataOfReg_dt = dateTime;
+
+            // 코드3
+            List<Codes> codes3 = new List<Codes>();
+            codes3 = (from _data_code3 in _context.T00_CODE
+                      where _data_code3.Code_grp.Equals(3)
+                      select _data_code3).ToList();
+            codes3.Insert(0, new Codes { Code = 0, Code_nm = "- Select -" });
+            ViewBag.ListOfCode3 = codes3;
+
+            // 코드4
+            List<Codes> codes4 = new List<Codes>();
+            codes4 = (from _data_code4 in _context.T00_CODE
+                      where _data_code4.Code_grp.Equals(4)
+                      select _data_code4).ToList();
+            codes4.Insert(0, new Codes { Code = 0, Code_nm = "- Select -" });
+            ViewBag.ListOfCode4 = codes4;
+
+            // 코드5
+            List<Codes> codes5 = new List<Codes>();
+            codes5 = (from _data_code5 in _context.T00_CODE
+                      where _data_code5.Code_grp.Equals(5)
+                      select _data_code5).ToList();
+            codes5.Insert(0, new Codes { Code = 0, Code_nm = "- Select -" });
+            ViewBag.ListOfCode5 = codes5;
+
+
+            return View(await db_data.ToListAsync());
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> History_Edit()
+        {
+            if (ModelState.IsValid)
+            {
+                var log_id = HttpContext.Request.Form["Log_id"].ToString();
+                var serial_id = HttpContext.Request.Form["Serial_id"].ToString();
+                var memco_cd = HttpContext.Request.Form["Memco_cd"].ToString();
+                var site_cd = HttpContext.Request.Form["Site_cd"].ToString();
+                var reg_dt = HttpContext.Request.Form["Reg_dt"].ToString();
+                var code3 = HttpContext.Request.Form["Code3"].ToString();
+                var code4 = HttpContext.Request.Form["Code4"].ToString();
+                var code5 = HttpContext.Request.Form["Code5"].ToString();
+                var memo1 = HttpContext.Request.Form["Memo1"].ToString();
+                var memo2 = HttpContext.Request.Form["Memo2"].ToString();
+
+                if (memco_cd == "0" || site_cd == "0")
+                {
+                    ModelState.AddModelError("", "Select SiteGroup & Site");
+                    return NotFound();
+                }
+                else
+                {
+                    Device_Logs devLog = new Device_Logs();
+                    devLog.Log_id = Convert.ToInt32(log_id);
+                    devLog.Serial_id = serial_id;
+                    devLog.Site_cd = Convert.ToInt32(site_cd);
+                    devLog.Reg_dt = Convert.ToDateTime(reg_dt);
+                    devLog.Code3 = Convert.ToInt32(code3);
+                    devLog.Code4 = Convert.ToInt32(code4);
+                    devLog.Code5 = Convert.ToInt32(code5);
+                    devLog.Memo1 = memo1;
+                    devLog.Memo2 = memo2;
+                    devLog.Input_id = User.FindFirst(ClaimTypes.Name).Value;
+                    devLog.Update_id = User.FindFirst(ClaimTypes.Name).Value;
+                    devLog.Input_dt = DateTime.Now;
+                    devLog.Update_dt = DateTime.Now;
+
+                    // Device_Log 저장 한다
+                    _context.Update(devLog);
+                    await _context.SaveChangesAsync();
+
+                    // Device_Sts 저장 한다
+                    var rData1 = _context.T00_DEVICE_LOG.Where(n => n.Serial_id.Equals(serial_id)).OrderByDescending(n => n.Reg_dt).Take(1).ToList();
+                    var rData2 = _context.T00_DEVICE_STS.Where(n => n.Serial_id.Equals(serial_id)).ToList();
+
+                    if (rData1.Count > 0)
+                    {
+
+                        if (rData2.Count > 0)
+                        {
+                            rData2[0].Serial_id = serial_id;
+                            rData2[0].Site_cd = rData1[0].Site_cd;
+                            rData2[0].Log_id = rData1[0].Log_id;
+
+                            _context.Update(rData2[0]);
+                            await _context.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            Device_Sts devSts = new Device_Sts();
+                            devSts.Serial_id = serial_id;
+                            devSts.Site_cd = rData1[0].Site_cd;
+                            devSts.Log_id = rData1[0].Log_id;
+
+                            _context.Add(devSts);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+                return RedirectToAction(nameof(History), new { id = serial_id });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 }

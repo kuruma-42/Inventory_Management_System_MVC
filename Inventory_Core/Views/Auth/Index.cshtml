@@ -1,0 +1,309 @@
+﻿@model List<Inventory_Core.ViewModels.AuthViewModel>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>CodeGroup</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                USERNAME
+            </th>
+            <th>
+                E-MAIL
+            </th>
+            <th>
+                ROLE
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var item in ViewBag.userdata)*@
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <input type="hidden" id="Id_@i" name="Id" value="@Model[i].Id" class="form-control" readonly />
+                        @Model[i].Id
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="hidden" id="UserName_@i" name="UserName" value="@Model[i].UserName" class="form-control" readonly />
+                        @Model[i].UserName
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="hidden" id="Email_@i" name="Email" value="@Model[i].Email" class="form-control" readonly />
+                        @Model[i].Email
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="hidden" id="RoleId_@i" name="Id" value="@Model[i].RoleId" class="form-control" readonly />
+                        <input type="hidden" id="Name_@i" name="Name" value="@Model[i].Name" class="form-control" readonly />
+                        @Model[i].Name
+                    </div>
+                </td>
+                <td>
+                    <input type="button" id="@Model[i].Id" onclick=" button1_click(this.id);go_check(@i);" value="수정" class="btn btn-primary" />
+                    <!-- input type="button" onclick="go_check()" value="수정" class="btn btn-primary" /-->
+                </td>
+
+                @*<td>
+                        <div class="form-group">
+                            <input type="text" id="UserName" name="UserName" value="@item.UserName" class="form-control" readonly />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" id="Email" name="Eamil" value="@item.Email" class="form-control" readonly />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" id="Name" name="Name" value="@item.Name" class="form-control" readonly />
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-action="Auth_Edit" asp-route-id="@item.Id" asp-route-UserName="@item.UserName" asp-route-Email="">권한 변경</a>
+                        <a asp-action="details" asp-route-id="@item.code_grp">details</a>
+                    <a asp-action="delete" asp-route-id="@item.code_grp">delete</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>\
+
+
+<form asp-controller="Auth" asp-action="Auth_Edit" id="AuthForm" method="post">
+    <div class="container">
+        <div class="modal fade" tabindex="-1" id="siteModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Authorization</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+
+                        @*<div class="form-group">
+                                <label class="control-label">SiteGroup & Site</label>
+                                <select id="Memco_cd" name="Memco_cd" class="form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListOfSiteGroup, "Memco_cd", "Memco_nm"))"></select>
+                            </div>
+                            <div class="form-group">
+                                <select id="Site_cd" name="Site_cd" class="form-control"
+                                        asp-items="@(new SelectList(string.Empty, "Site_cd", "Site_nm"))"></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">기준일자</label>
+                                <input type="datetime-local" id="Reg_dt" name="Reg_dt" value="@ViewBag.DataOfReg_dt" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">구분</label>
+                                <select id="Code3" name="Code3" class="form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListOfCode3, "Code", "Code_nm"))"></select>
+                            </div>
+                            <div class="form-group">
+                                <select id="Code4" name="Code4" class="form-control"
+                                        asp-items="@(new SelectList(@ViewBag.ListOfCode4, "Code", "Code_nm"))"></select>
+                            </div>*@
+                        <div class="form-group">
+                            <input type="hidden" id="Id" name="Id" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">USER ROLES</label>
+                            <select id="RoleId" name="RoleId" class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.ListOfRoles,"Id" ,"Name"))"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">USER NAME</label>
+                            <input type="text" id="Username" name="Username" value="" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">E-MAIL</label>
+                            <input type="text" id="Email" name="Email" value="" class="form-control" />                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button button4">저장</button>
+                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                            취소
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#siteModal").modal('hide');
+    });
+
+    //$("#btnAddClick1").click(function () {
+    //    $("#siteModal").modal('show');
+    //});
+
+    function button1_click(clicked_id) {
+    $("#siteModal").modal('show');
+    //alert(clicked_id);
+    }
+
+    $("#btnHideModal").click(function () {
+        $("#siteModal").modal('hide');
+    });
+
+
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $('#Site_cd').html(items);
+    });
+
+    $(document).ready(function () {
+        $('#Memco_cd').change(function () {
+            var url = '@Url.Content("~/")' + "Devices/GetSite";
+            var ddlsource = "#Memco_cd";
+            $.getJSON(url, { Memco_cd: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#Site_cd").empty();
+                $.each(data, function (i, site_cd) {
+                    items += "<option value='" + site_cd.value + "'>" + site_cd.text + "</option>";
+                });
+                $('#Site_cd').html(items);
+            });
+        });
+    });
+
+    //ajax 현장명
+    function go_siteBind(siteVal) {
+            var url = '@Url.Content("~/")' + "Devices/GetSite";
+            var ddlsource = "#Memco_cd";
+            $.getJSON(url, { Memco_cd: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#Site_cd").empty();
+                $.each(data, function (i, site_cd) {
+                    if (site_cd.value == siteVal) {
+                        items += "<option value='" + site_cd.value + "' selected>" + site_cd.text + "</option>";
+                    } else {
+                        items += "<option value='" + site_cd.value + "'>" + site_cd.text + "</option>";
+                    }
+                });
+                $('#Site_cd').html(items);
+            });
+    }
+
+
+    //Edit Mapping
+    function go_check(rowNum) {
+    //    //로그 아이디 매핑
+    //    var logid = document.getElementById("log_id_" + rowNum).value;
+    //    document.getElementById("Log_id").value = logid;
+
+    //    //회원사코드 매핑
+    //    var memcomapping = document.getElementById("Memco_cd_" + rowNum).value;
+    //    var memco_cd = document.getElementById("Memco_cd");
+
+
+    //    for (var i = 0; i < memco_cd.length; i++) {
+    //        if (memco_cd[i].value == memcomapping) {
+    //            memco_cd[i].selected = true
+    //        }
+    //    }
+    //    //사이트코드 매핑
+    //    var sitecdmapping = document.getElementById("Site_cd_" + rowNum).value;
+    //    go_siteBind(sitecdmapping);
+
+    //    //코드3매핑
+    //    var code3mapping = document.getElementById("Code3_" + rowNum).value;
+    //    var scode3 = document.getElementById("Code3");
+
+    //    for (var i = 0; i < scode3.length; i++) {
+    //        if (scode3[i].value == code3mapping) {
+    //            scode3[i].selected = true;
+    //        }
+    //    }
+    //    //코드4매핑
+    //    var code4mapping = document.getElementById("Code4_" + rowNum).value;
+    //    var scode4 = document.getElementById("Code4");
+
+    //    for (var i = 0; i < scode4.length; i++) {
+    //        if (scode4[i].value == code4mapping) {
+    //            scode4[i].selected = true;
+    //        }
+    //    }
+
+        //코드5매핑
+
+
+
+        var rolemapping = document.getElementById("RoleId_" + rowNum).value;
+
+        var sroles = document.getElementById("RoleId");
+
+        for (var i = 0; i < sroles.length; i++) {
+            if (sroles[i].value == rolemapping) {
+                sroles[i].selected = true;
+            }
+
+        }
+        //유저네임 매핑
+        var usernamemapping = document.getElementById("UserName_" + rowNum).value;
+        document.getElementById("Username").value = usernamemapping;
+
+        //이메일 매핑
+        var emailmapping = document.getElementById("Email_" + rowNum).value;
+        document.getElementById("Email").value = emailmapping;
+
+        var idmapping = document.getElementById("Id_" + rowNum).value;
+        document.getElementById("Id").value = idmapping;
+
+
+
+
+        //var regdtmapping = document.getElementById("Reg_dt_" + rowNum).value;
+        //var regdt = document.getElementById("Reg_dt").value = regdtmapping;
+
+
+
+        //var regdtmapping = document.getElementById("Reg_dt_" + rowNum).value;
+        //alert(regdtmapping);
+
+        //document.getElementById("Reg_dt").value = regdtmapping;
+
+        ////기준일자 매핑
+        //var regdtmapping = document.getElementById("Reg_dt_" + rowNum).value;
+        ////var regdt = document.getElementById("Reg_dt").value = regdtmapping;
+        //var regdt = doucument.regdt = document.getElementById("Reg_dt").value= regdtamapping;
+        //for (var i = 0; i < regdt.length; i++) {
+        //    if (regdt[i].value == regdtmapping) {
+        //        regdt[i].selected = true;
+        //    }
+        //}
+    }
+</script>﻿
+
+
